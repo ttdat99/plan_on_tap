@@ -10,9 +10,10 @@
 <div class="container my-5">
     <h1 class="text-center mb-4">📚 Interview Study Plan (1 - 1.5 Weeks)</h1>
 
-    <div class="mb-3">
-        <input type="text" class="form-control" id="subPlanInput" placeholder="Nhập kế hoạch nhỏ (ví dụ: Kiểm tra lại Spring Boot Config)">
-        <button class="btn btn-success mt-2" onclick="addSubPlan()">Thêm Kế Hoạch Nhỏ</button>
+     <div class="mb-3">
+        <input type="text" class="form-control mb-2" id="topicInput" placeholder="Nhập chủ đề (ví dụ: Kubernetes)">
+        <textarea class="form-control mb-2" id="knowledgeInput" placeholder="Nhập kiến thức liên quan (ngăn cách bởi dấu chấm phẩy ';')"></textarea>
+        <button class="btn btn-warning" onclick="addNewTopic()">➕ Thêm Chủ Đề Mới</button>
     </div>
 
     <div id="subPlans" class="mb-4"></div>
@@ -27,22 +28,24 @@ const STORAGE_KEY_MAIN = "interview_plan_status";
 const STORAGE_KEY_SUB = "sub_plans";
 
 const planData = [
-    { day: 1, topic: "Microservices & Kiến trúc", knowledge: ["Microservices vs Monolithic", "Ưu/Nhược điểm, Anti-patterns", "API Gateway, Circuit Breaker, Saga, CQRS"], questions: ["Tại sao chọn Microservices?", "Giao tiếp giữa các service như thế nào?"] },
-    { day: 2, topic: "Spring Boot Core & Cấu trúc Dự Án", knowledge: ["Spring Context, Dependency Injection, Bean Lifecycle", "Annotation: @Component, @Service, @Repository, @Controller, @RestController, @Configuration", "Cấu trúc chuẩn project Spring Boot"], questions: ["Khi nào dùng @Component và @Bean?", "Bean được khởi tạo như thế nào?"] },
-    { day: 3, topic: "Spring Boot Advanced & Exception Handling", knowledge: ["@Transactional, Propagation & Isolation", "Exception Handling: @ControllerAdvice, @ExceptionHandler", "Validation: @Valid, Custom Validator"], questions: ["Khi nào rollback không hoạt động?", "Xử lý Exception trong REST API như thế nào?"] },
-    { day: 4, topic: "Spring Security & OAuth2 (Optional)", knowledge: ["Authentication vs Authorization", "JWT Token Flow, OAuth2 Flow", "Spring Security Filter Chain"], questions: ["JWT có nhược điểm gì?", "Khi nào nên dùng OAuth2?"] },
-    { day: 5, topic: "PostgreSQL", knowledge: ["MVCC, Transaction Isolation Levels", "Indexing: B-Tree, GiST, GIN", "Query Execution Plan (EXPLAIN ANALYZE)"], questions: ["Khi nào Index không được sử dụng?", "Giải thích MVCC và Vacuum."] },
-    { day: 6, topic: "Redis & Caching Patterns", knowledge: ["Redis Data Structures", "Cache Aside, Write Through, Write Behind", "TTL, Eviction Policies: LRU, LFU, FIFO"], questions: ["Khi nào cache bị stale?", "Redis có phải luôn là lựa chọn tốt?"] },
-    { day: 7, topic: "Kafka", knowledge: ["Kafka Architecture", "Consumer Groups, Message Ordering", "At-least-once, Exactly-once semantics"], questions: ["Khi nào xảy ra message loss?", "Kafka và RabbitMQ khác nhau như thế nào?"] },
-    { day: 8, topic: "Elasticsearch & Logging", knowledge: ["Elasticsearch Concepts", "Query vs Filter Context", "Logging Stack: ELK/EFK"], questions: ["Khi nào không nên dùng Elasticsearch?", "Làm sao đảm bảo kết quả tìm kiếm nhanh?"] },
-    { day: 9, topic: "Java Core Ôn Tập", knowledge: ["OOP, SOLID, Design Patterns", "Collections: List, Map, Set", "Concurrency: Thread, Runnable, synchronized, volatile"], questions: ["Khi nào dùng HashMap vs ConcurrentHashMap?", "Giải thích synchronized và volatile."] },
-    { day: 10, topic: "Tổng Kết & Mock Interview", knowledge: ["Review toàn bộ topic", "Giải thích nhanh 3-5 phút mỗi chủ đề", "Chuẩn bị tình huống dự án"], questions: ["Vấn đề gặp phải và cách giải quyết?", "Lý do chọn giải pháp kỹ thuật?"] }
+    { day: 1, topic: "Microservices & Kiến trúc", knowledge: ["Microservices vs Monolithic", "Ưu/Nhược điểm, Anti-patterns", "API Gateway, Circuit Breaker, Saga, CQRS", "Service Mesh (Istio, Linkerd)", "Service Discovery (Consul, Eureka)", "Config Server & Centralized Configuration"], questions: ["Tại sao chọn Microservices?", "Giao tiếp giữa các service như thế nào?", "Bạn đã từng gặp vấn đề gì với service discovery chưa?"], project: "Phân tích kiến trúc microservices bạn đã làm: lý do tách, cách deploy, giao tiếp, config chung" },
+    { day: 2, topic: "Spring Boot Core & Cấu trúc Dự Án", knowledge: ["Spring Context, Dependency Injection, Bean Lifecycle", "Annotation: @Component, @Service, @Repository, @Controller, @RestController, @Configuration", "Modular hoá code và layered architecture", "Custom Starter và AutoConfiguration"], questions: ["Khi nào dùng @Component và @Bean?", "Bean được khởi tạo như thế nào?", "Cấu trúc nào giúp scale ứng dụng tốt hơn?"], project: "Giải thích cấu trúc project hiện tại bạn đang làm với Spring Boot" },
+    { day: 3, topic: "Spring Boot Advanced & Exception Handling", knowledge: ["@Transactional, Propagation & Isolation", "Exception Handling: @ControllerAdvice, @ExceptionHandler", "Validation: @Valid, Custom Validator", "Retry & Circuit Breaker (Spring Retry, Resilience4j)", "Custom Converter & Formatter"], questions: ["Khi nào rollback không hoạt động?", "Cách xử lý lỗi bất đồng bộ?", "Làm sao để retry khi gọi API thất bại?"], project: "Mô tả 1 tình huống lỗi thực tế bạn đã debug liên quan đến transaction hoặc validation" },
+    { day: 4, topic: "Spring Security & OAuth2 (Optional)", knowledge: ["Authentication vs Authorization", "JWT Token Flow, OAuth2 Flow", "Spring Security Filter Chain", "Resource Server vs Authorization Server", "CORS và CSRF trong Spring Security"], questions: ["JWT có nhược điểm gì?", "Khi nào nên dùng OAuth2?", "Làm sao bảo vệ endpoint REST?"], project: "Giải thích cách bạn bảo mật API trong một dự án thực tế" },
+    { day: 5, topic: "PostgreSQL", knowledge: ["MVCC, Transaction Isolation Levels", "Indexing: B-Tree, GiST, GIN", "Query Execution Plan (EXPLAIN ANALYZE)", "Partition Table", "CTE Recursive", "Window Functions nâng cao"], questions: ["Khi nào Index không được sử dụng?", "Giải thích MVCC và Vacuum", "Khi nào nên dùng table partitioning?"], project: "Tìm một query bạn từng tối ưu và giải thích logic cũng như cách cải thiện hiệu năng" },
+    { day: 6, topic: "Redis & Caching Patterns", knowledge: ["Redis Data Structures", "Cache Aside, Write Through, Write Behind", "TTL, Eviction Policies: LRU, LFU, FIFO", "Pub/Sub", "Distributed Lock (SETNX + Expire)", "Redis Cluster vs Sentinel"], questions: ["Khi nào cache bị stale?", "Redis có phải luôn là lựa chọn tốt?", "Cách triển khai locking bằng Redis?"], project: "Giải thích nơi bạn dùng cache thực tế và vấn đề đã gặp" },
+    { day: 7, topic: "Kafka", knowledge: ["Kafka Architecture", "Consumer Groups, Message Ordering", "At-least-once, Exactly-once semantics", "Rebalance & Offset Management", "Kafka Streams & KSQL", "Dead Letter Queue"], questions: ["Khi nào xảy ra message loss?", "Kafka và RabbitMQ khác nhau như thế nào?", "Giải pháp xử lý message lỗi?"], project: "Trình bày flow Kafka bạn đã triển khai: producer, consumer, topic, xử lý lỗi" },
+    { day: 8, topic: "Elasticsearch & Logging", knowledge: ["Elasticsearch Concepts", "Query vs Filter Context", "Logging Stack: ELK/EFK", "Full-text search vs Keyword", "Analyzers & Tokenizers", "Index Tuning & Shard Management"], questions: ["Khi nào không nên dùng Elasticsearch?", "Làm sao đảm bảo kết quả tìm kiếm nhanh?", "Cách tối ưu index size?"], project: "Chia sẻ cách bạn dùng Elasticsearch để tìm kiếm dữ liệu trong hệ thống" },
+    { day: 9, topic: "Java Core Ôn Tập (6 tiếng)", knowledge: ["OOP, SOLID, Design Patterns", "Collections: List, Map, Set", "Concurrency: Thread, Runnable, synchronized, volatile", "ExecutorService, Callable, Future", "Stream API nâng cao", "Garbage Collection và Memory Model"], questions: ["Khi nào dùng HashMap vs ConcurrentHashMap?", "Giải thích synchronized và volatile.", "Bạn đã từng bị memory leak chưa?"], project: "Tổng hợp lại các lỗi Java Core bạn từng gặp và rút kinh nghiệm" },
+    { day: 10, topic: "Tổng Kết & Mock Interview (6 tiếng)", knowledge: ["Review toàn bộ topic", "Giải thích nhanh 3-5 phút mỗi chủ đề", "Chuẩn bị tình huống dự án", "STAR Format khi trình bày kinh nghiệm", "Soft skill: Communication, Ownership, Problem Solving"], questions: ["Vấn đề gặp phải và cách giải quyết?", "Lý do chọn giải pháp kỹ thuật?", "Bạn học được gì từ thất bại?"], project: "Chuẩn bị 3 câu chuyện dự án cụ thể để kể trong phỏng vấn theo dạng STAR" }
 ];
 
 function saveMainPlanStatus() {
     const status = {};
     planData.forEach(item => {
-        status[`day-${item.day}`] = document.getElementById(`day-${item.day}`).checked;
+        const id = `day-${item.day}`;
+        const checkbox = document.getElementById(id);
+        if (checkbox) status[id] = checkbox.checked;
     });
     localStorage.setItem(STORAGE_KEY_MAIN, JSON.stringify(status));
 }
@@ -50,34 +53,37 @@ function saveMainPlanStatus() {
 function loadMainPlanStatus() {
     const status = JSON.parse(localStorage.getItem(STORAGE_KEY_MAIN));
     if (status) {
-        for (const [id, checked] of Object.entries(status)) {
+        Object.entries(status).forEach(([id, checked]) => {
             const checkbox = document.getElementById(id);
             if (checkbox) checkbox.checked = checked;
-        }
+        });
     }
 }
 
 function renderPlan() {
     const planContainer = document.getElementById('plan');
+    planContainer.innerHTML = '';
     planData.forEach(item => {
         planContainer.innerHTML += `
         <div class="card mb-3">
             <div class="card-header bg-primary text-white">
-                ✅ Ngày ${item.day}: ${item.topic} <input type="checkbox" class="form-check-input float-end" id="day-${item.day}" onchange="saveMainPlanStatus()">
+                ✅ Ngày ${item.day || '-'}: ${item.topic} <input type="checkbox" class="form-check-input float-end" id="day-${item.day}" onchange="saveMainPlanStatus()">
             </div>
             <div class="card-body">
                 <h5>📖 Kiến thức:</h5>
                 <ul>${item.knowledge.map(k => `<li>${k}</li>`).join('')}</ul>
-                <h5>❓ Tự hỏi:</h5>
-                <ul>${item.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+                ${item.questions ? `<h5>❓ Tự hỏi:</h5><ul>${item.questions.map(q => `<li>${q}</li>`).join('')}</ul>` : ''}
+                ${item.project ? `<h5>💼 Dự án thực tế:</h5><p>${item.project}</p>` : ''}
             </div>
         </div>`;
     });
+    loadMainPlanStatus();
 }
 
 function markAllDone() {
     planData.forEach(item => {
-        document.getElementById(`day-${item.day}`).checked = true;
+        const checkbox = document.getElementById(`day-${item.day}`);
+        if (checkbox) checkbox.checked = true;
     });
     saveMainPlanStatus();
 }
@@ -85,37 +91,47 @@ function markAllDone() {
 function addSubPlan() {
     const input = document.getElementById('subPlanInput');
     const value = input.value.trim();
-    if (value) {
-        const subPlans = JSON.parse(localStorage.getItem(STORAGE_KEY_SUB)) || [];
-        subPlans.push({ id: `sub-${Date.now()}`, text: value, done: false });
-        localStorage.setItem(STORAGE_KEY_SUB, JSON.stringify(subPlans));
-        input.value = '';
-        renderSubPlans();
-    }
+    if (!value) return;
+    const subPlans = JSON.parse(localStorage.getItem(STORAGE_KEY_SUB)) || [];
+    subPlans.push({ id: `sub-${Date.now()}`, text: value, done: false });
+    localStorage.setItem(STORAGE_KEY_SUB, JSON.stringify(subPlans));
+    input.value = '';
+    renderSubPlans();
 }
 
 function toggleSubPlan(id) {
     const subPlans = JSON.parse(localStorage.getItem(STORAGE_KEY_SUB)) || [];
     const updatedPlans = subPlans.map(plan => plan.id === id ? { ...plan, done: !plan.done } : plan);
     localStorage.setItem(STORAGE_KEY_SUB, JSON.stringify(updatedPlans));
+    renderSubPlans();
 }
 
 function renderSubPlans() {
-    const subPlansContainer = document.getElementById('subPlans');
-    subPlansContainer.innerHTML = '';
+    const container = document.getElementById('subPlans');
+    container.innerHTML = '';
     const subPlans = JSON.parse(localStorage.getItem(STORAGE_KEY_SUB)) || [];
     subPlans.forEach(plan => {
-        subPlansContainer.innerHTML += `
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="${plan.id}" ${plan.done ? 'checked' : ''} onchange="toggleSubPlan('${plan.id}')">
-                <label class="form-check-label" for="${plan.id}">${plan.text}</label>
-            </div>`;
+        container.innerHTML += `
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="${plan.id}" ${plan.done ? 'checked' : ''} onchange="toggleSubPlan('${plan.id}')">
+            <label class="form-check-label" for="${plan.id}">${plan.text}</label>
+        </div>`;
     });
+}
+
+function addNewTopic() {
+    const topic = document.getElementById('topicInput').value.trim();
+    const knowledgeInput = document.getElementById('knowledgeInput').value.trim();
+    if (!topic || !knowledgeInput) return;
+    const knowledge = knowledgeInput.split(';').map(k => k.trim()).filter(k => k);
+    planData.push({ topic, knowledge });
+    renderPlan();
+    document.getElementById('topicInput').value = '';
+    document.getElementById('knowledgeInput').value = '';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderPlan();
-    loadMainPlanStatus();
     renderSubPlans();
 });
 </script>
