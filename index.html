@@ -23,10 +23,12 @@
     <button class="btn btn-primary mt-4" onclick="markAllDone()">Mark All as Done</button>
 
     <h2>Tổng hợp các mẹo khi phỏng vấn</h2>
-    <p>Situation – tình huống: Trong vai trò của mình với tư cách là nhà thiết kế, đã có lúc nhóm của mình đối mặt với những vấn đề khó khăn như thiếu nhân sự và lượng công việc tồn động đáng kể. Những người quản lý đã đặt ra thời hạn thực tế, điều này gây ra căng thẳng cho team tôi và ảnh hưởng đến tinh thần.
-Task – nhiệm vụ: Với tư cách là một trường nhóm, nhiệm vụ của tôi không chỉ là đảm bảo nhóm của mình có thể đáp ứng đúng thời hạn mà còn làm việc với các bộ phận khác và giữ cho nhóm có thêm động lực để hoàn thành công việc.
-Action: Tôi đã thiết lập quy trình sáng tạo gồm thiết lập thời gian dự định hoàn thành dự án đề ra, lên lịch các cuộc họp theo tuần với những người quản lý về mục tiêu, chiến lược của nhóm về quy trình mới. Vì thế, họ có thể yên tâm hơn khi biết được các vấn đề được giải quyết.
-Result – kết quả: Bằng việc chia sẻ một cách rõ ràng, minh bạch cho những quy trình của nhóm mình và trao đổi rõ ràng về những kỳ vọng với người quản lý, chúng tôi đã ưu tiên lại danh sách công việc cần làm và hoàn thành mọi thứ đúng hạn, tránh việc tồn đọng. Tôi đã rút ra được bài học cho mình, đồng thời, tiếp tục áp dụng cấu trúc này và kết quả là trong quý tiếp theo, chúng tôi đã rút ngắn thời gian dự án trung bình của mình xuống còn 2 ngày. Bản thân tôi cũng học được tầm quan trọng của việc giao tiếp rõ ràng giữa các thành viên trong nhóm và quản lý của mình.
+    <ul>
+	    <li>Situation – tình huống: Trong vai trò của mình với tư cách là nhà thiết kế, đã có lúc nhóm của mình đối mặt với những vấn đề khó khăn như thiếu nhân sự và lượng công việc tồn động đáng kể. Những người quản lý đã đặt ra thời hạn thực tế, điều này gây ra căng thẳng cho team tôi và ảnh hưởng đến tinh thần.</li>
+	    <li>Task – nhiệm vụ: Với tư cách là một trường nhóm, nhiệm vụ của tôi không chỉ là đảm bảo nhóm của mình có thể đáp ứng đúng thời hạn mà còn làm việc với các bộ phận khác và giữ cho nhóm có thêm động lực để hoàn thành công việc.</li>
+	    <li>Action: Tôi đã thiết lập quy trình sáng tạo gồm thiết lập thời gian dự định hoàn thành dự án đề ra, lên lịch các cuộc họp theo tuần với những người quản lý về mục tiêu, chiến lược của nhóm về quy trình mới. Vì thế, họ có thể yên tâm hơn khi biết được các vấn đề được giải quyết.</li>
+	    <li>Result – kết quả: Bằng việc chia sẻ một cách rõ ràng, minh bạch cho những quy trình của nhóm mình và trao đổi rõ ràng về những kỳ vọng với người quản lý, chúng tôi đã ưu tiên lại danh sách công việc cần làm và hoàn thành mọi thứ đúng hạn, tránh việc tồn đọng. Tôi đã rút ra được bài học cho mình, đồng thời, tiếp tục áp dụng cấu trúc này và kết quả là trong quý tiếp theo, chúng tôi đã rút ngắn thời gian dự án trung bình của mình xuống còn 2 ngày. Bản thân tôi cũng học được tầm quan trọng của việc giao tiếp rõ ràng giữa các thành viên trong nhóm và quản lý của mình.</li>
+    </ul>	    
 </p>
 
 </div>
@@ -37,7 +39,19 @@ const STORAGE_KEY_SUB = "sub_plans";
 
 const planData = [
     { day: 1, topic: "Microservices & Kiến trúc", knowledge: ["Microservices vs Monolithic", "Ưu/Nhược điểm, Anti-patterns", "API Gateway, Circuit Breaker, Saga, CQRS", "Service Mesh (Istio, Linkerd)", "Service Discovery (Consul, Eureka)", "Config Server & Centralized Configuration"], questions: ["Tại sao chọn Microservices?", "Giao tiếp giữa các service như thế nào?", "Bạn đã từng gặp vấn đề gì với service discovery chưa?"], project: "Phân tích kiến trúc microservices bạn đã làm: lý do tách, cách deploy, giao tiếp, config chung" },
-    { day: 2, topic: "Spring Boot Core & Cấu trúc Dự Án", knowledge: ["Spring Context, Dependency Injection, Bean Lifecycle", "Annotation: @Component, @Service, @Repository, @Controller, @RestController, @Configuration", "Modular hoá code và layered architecture", "Custom Starter và AutoConfiguration"], questions: ["Khi nào dùng @Component và @Bean?", "Bean được khởi tạo như thế nào?", "Cấu trúc nào giúp scale ứng dụng tốt hơn?"], project: "Giải thích cấu trúc project hiện tại bạn đang làm với Spring Boot" },
+    { day: 2, topic: "Spring Boot Core & Cấu trúc Dự Án", 
+     	knowledge: ["Spring Context, Dependency Injection, Bean Lifecycle", 
+		    "Annotation: @Component, @Service, @Repository, @Controller, @RestController, @Configuration", 
+		    "Modular hoá code và layered architecture", "Custom Starter và AutoConfiguration"], 
+     	questions: ["Khi nào dùng @Component và @Bean?", 
+		    "Bean được khởi tạo như thế nào?", 
+		    "Cấu trúc nào giúp scale ứng dụng tốt hơn?",
+		    "hãy nêu quá trình bean cycle"], 
+     	project: [
+			"Giải thích cấu trúc project hiện tại bạn đang làm với Spring Boot",
+		  	"Các vấn đề gặp phải khi làm việc với bean?, giải quyết như thế nào",
+			"autowired và inject bean trực tiếp thông qua constructor, bạn chọn cách nào?"
+		 ]},
     { day: 3, topic: "Spring Boot Advanced & Exception Handling", knowledge: ["@Transactional, Propagation & Isolation", "Exception Handling: @ControllerAdvice, @ExceptionHandler", "Validation: @Valid, Custom Validator", "Retry & Circuit Breaker (Spring Retry, Resilience4j)", "Custom Converter & Formatter"], questions: ["Khi nào rollback không hoạt động?", "Cách xử lý lỗi bất đồng bộ?", "Làm sao để retry khi gọi API thất bại?"], project: "Mô tả 1 tình huống lỗi thực tế bạn đã debug liên quan đến transaction hoặc validation" },
     { day: 4, topic: "Spring Security & OAuth2 (Optional)", knowledge: ["Authentication vs Authorization", "JWT Token Flow, OAuth2 Flow", "Spring Security Filter Chain", "Resource Server vs Authorization Server", "CORS và CSRF trong Spring Security"], questions: ["JWT có nhược điểm gì?", "Khi nào nên dùng OAuth2?", "Làm sao bảo vệ endpoint REST?"], project: "Giải thích cách bạn bảo mật API trong một dự án thực tế" },
     { day: 5, topic: "PostgreSQL", knowledge: ["MVCC, Transaction Isolation Levels", "Indexing: B-Tree, GiST, GIN", "Query Execution Plan (EXPLAIN ANALYZE)", "Partition Table", "CTE Recursive", "Window Functions nâng cao"], questions: ["Khi nào Index không được sử dụng?", "Giải thích MVCC và Vacuum", "Khi nào nên dùng table partitioning?"], project: "Tìm một query bạn từng tối ưu và giải thích logic cũng như cách cải thiện hiệu năng" },
