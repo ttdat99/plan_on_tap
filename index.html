@@ -63,7 +63,11 @@ const planData = [
     { day: 11, topic: "Ôn tập tasking thực tế", knowledge: ["Đã xử lí cách đặt tour như thế nào?", 
 							    "Có vấn đề gì xảy ra trên production, đã xử lí vấn đề đó như thế nào?",
 							   "Có gặp vấn đề với performance không?", "Soft skill: Communication, Ownership, Problem Solving"], 
-	questions: ["Vấn đề gặp phải và cách giải quyết?", "Lý do chọn giải pháp kỹ thuật?", "Bạn học được gì từ thất bại?"], project: "Chuẩn bị kĩ các tình huống" }
+	questions: ["Vấn đề gặp phải và cách giải quyết?", "Lý do chọn giải pháp kỹ thuật?", "Bạn học được gì từ thất bại?"], project: "Chuẩn bị kĩ các tình huống" },
+   { day: 12, topic: "Java Multithreading", knowledge: ["Thread & Runnable", "ExecutorService", "synchronized & volatile", "Locks & Semaphores", "ThreadPool", "CompletableFuture"], questions: ["Khi nào dùng synchronized?", "volatile khác gì synchronized?", "Cách tối ưu performance đa luồng?"], project: "Trình bày ví dụ thực tế bạn đã xử lý bài toán đa luồng: thiết kế, vấn đề gặp phải và cách giải quyết" },
+   { day: 13, topic: "System Design", knowledge: ["Scalability", "Load Balancing", "Database Sharding", "Caching Strategies", "High Availability"], questions: ["Làm sao scale system?", "Đảm bảo HA thế nào?"], project: "Thiết kế hệ thống giả định như social network, e-commerce" },
+   { day: 14, topic: "Java Performance Tuning", knowledge: ["JVM Internals", "JIT Compiler", "Heap & GC Tuning", "Profiling Tools", "Memory Leak Detection"], questions: ["Làm sao tối ưu GC?", "Dùng công cụ nào để tìm leak?"], project: "Phân tích performance ứng dụng Java thực tế và cải thiện" },
+   { day: 15, topic: "Reactive Programming in Java", knowledge: ["Reactive Streams", "Project Reactor", "Mono & Flux", "Backpressure", "Spring WebFlux"], questions: ["Reactive khác gì CompletableFuture?", "Khi nào nên dùng reactive?"], project: "Triển khai một flow reactive trong dự án thực tế và so sánh với truyền thống" }	
 ];
 
 function saveMainPlanStatus() {
